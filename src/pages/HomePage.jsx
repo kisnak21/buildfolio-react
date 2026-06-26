@@ -1,30 +1,30 @@
-import Footer from "../components/layout/Footer";
-import Header from "../components/layout/Header";
-import Hero from "../components/home/Hero";
-import Section from "../components/home/Section";
-import ProjectCard from "../components/home/ProjectCard";
-import CategoryCard from "../components/home/CategoryCard";
-import TechPill from "../components/home/TechPill";
-import { projects, categories, technologies } from "../data/projects";
+import Footer from '../components/layout/Footer'
+import Header from '../components/layout/Header'
+import Hero from '../components/home/Hero'
+import Section from '../components/home/Section'
+import ProjectCard from '../components/home/ProjectCard'
+import CategoryCard from '../components/home/CategoryCard'
+import TechPill from '../components/home/TechPill'
+import { projects, categories, technologies } from '../data/projects'
 
 const HomePage = () => {
-  const featuredProjects = projects.slice(0, 3);
-  const favoriteProjects = projects.slice(3, 6);
+  const featuredProjects = projects.slice(0, 3)
+  const favoriteProjects = projects.slice(3, 6)
 
   return (
-    <div className="bg-gray-50 text-gray-900">
+    <div className='bg-gray-50 text-gray-900'>
       <Header />
 
       <main>
         <Hero />
 
         <Section
-          id="projects"
-          title="Featured Projects"
-          subtitle="Handpicked by the community"
-          viewAllHref="#"
+          id='projects'
+          title='Featured Projects'
+          subtitle='Handpicked by the community'
+          viewAllHref='#'
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
             {featuredProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
@@ -32,11 +32,11 @@ const HomePage = () => {
         </Section>
 
         <Section
-          id="categories"
-          title="Browse by Category"
-          subtitle="Find projects that match your interests"
+          id='categories'
+          title='Browse by Category'
+          subtitle='Find projects that match your interests'
         >
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3'>
             {categories.map((category) => (
               <CategoryCard key={category.name} {...category} />
             ))}
@@ -44,11 +44,11 @@ const HomePage = () => {
         </Section>
 
         <Section
-          id="technologies"
-          title="Trending Technologies"
-          subtitle="What developers are building with right now"
+          id='technologies'
+          title='Trending Technologies'
+          subtitle='What developers are building with right now'
         >
-          <div className="flex flex-wrap gap-2">
+          <div className='flex flex-wrap gap-2'>
             {technologies.map((tech) => (
               <TechPill key={tech.name} {...tech} />
             ))}
@@ -56,11 +56,11 @@ const HomePage = () => {
         </Section>
 
         <Section
-          title="Community Favorites"
-          subtitle="Most liked projects this month"
-          viewAllHref="#"
+          title='Community Favorites'
+          subtitle='Most liked projects this month'
+          viewAllHref='#'
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
             {favoriteProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
@@ -70,7 +70,7 @@ const HomePage = () => {
 
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

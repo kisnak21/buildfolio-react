@@ -1,24 +1,24 @@
 const Checkbox = ({ id, label, checked, onChange, error }) => {
   return (
-    <div className="mb-1">
-      <div className="flex items-start gap-2">
+    <div className='mb-1'>
+      <div className='flex items-start gap-2'>
         <input
-          type="checkbox"
+          type='checkbox'
           id={id}
           checked={checked}
           onChange={onChange}
-          className="w-4 h-4 mt-0.5 rounded border-gray-300 bg-white accent-primary cursor-pointer shrink-0"
+          className='w-4 h-4 mt-0.5 rounded border-gray-300 bg-white accent-primary cursor-pointer shrink-0'
         />
         <label
           htmlFor={id}
-          className="text-xs text-gray-600 cursor-pointer leading-relaxed"
+          className='text-xs text-gray-600 cursor-pointer leading-relaxed'
         >
           {label}
         </label>
       </div>
-      {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
+      {error && <p className='text-xs text-red-500 mt-1.5'>{error}</p>}
     </div>
-  );
-};
+  )
+}
 
-export default Checkbox;
+export default Checkbox
