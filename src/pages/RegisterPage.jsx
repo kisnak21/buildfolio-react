@@ -1,0 +1,145 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthCard from "../components/layout/AuthCard";
+import Input from "../components/ui/Input";
+import Checkbox from "../components/ui/Checkbox";
+import Button from "../components/ui/Button";
+import GoogleButton from "../components/ui/GoogleButton";
+import Divider from "../components/ui/Divider";
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const RegisterPage = () => {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreed, setAgreed] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = {};
+
+    if (!name.trim()) {
+      newErrors.name = "Name is required.";
+    }
+
+    if (!emailRegex.test(email.trim())) {
+      newErrors.email = "Enter a valid email address.";
+    }
+
+    if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters.";
+    }
+
+    if (confirmPassword !== password) {
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+
+    if (!agreed) {
+      newErrors.agreed = "You must agree to the privacy policy.";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      navigate("/");
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gray-50">
+      <AuthCard
+        title="Create an account"
+        subtitle="Start building your portfolio today"
+      >
+        <form onSubmit={handleSubmit} noValidate>
+          <Input
+            label="Full name"
+            id="name"
+            placeholder="John Doe"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            error={errors.name}
+          />
+
+          <Input
+            label="Email"
+            type="email"
+            id="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            error={errors.email}
+          />
+
+          <Input
+            label="Password"
+            type="password"
+            id="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={errors.password}
+          />
+
+          <Input
+            label="Confirm password"
+            type="password"
+            id="confirm-password"
+            placeholder="••••••••"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            error={errors.confirmPassword}
+          />
+
+          <div className="mb-6">
+            <Checkbox
+              id="privacy"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              error={errors.agreed}
+              label={
+                <>
+                  I agree to the{" "}
+                  <a href="#" className="text-[#2563eb] hover:text-blue-700 transition-colors">
+                    Privacy Policy
+                  </a>{" "}
+                  and{" "}
+                  <a href="#" className="text-[#2563eb] hover:text-blue-700 transition-colors">
+                    Terms of Service
+                  </a>
+                </>
+              }
+            />
+          </div>
+
+          <div className="mb-3">
+            <Button type="submit" fullWidth>
+              Sign up
+            </Button>
+          </div>
+
+          <GoogleButton>Continue with Google</GoogleButton>
+        </form>
+
+        <Divider />
+
+        <p className="text-center text-sm text-gray-500">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-[#2563eb] hover:text-blue-700 transition-colors font-medium"
+          >
+            Log in
+          </Link>
+        </p>
+      </AuthCard>
+    </div>
+  );
+};
+
+export default RegisterPage;
