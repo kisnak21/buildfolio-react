@@ -61,7 +61,7 @@ const LoginPage = () => {
             rightElement={
               <a
                 href="#"
-                className="text-xs text-[#2563eb] hover:text-blue-700 transition-colors"
+                className="text-xs text-primary hover:text-primary-hover transition-colors"
               >
                 Forgot password?
               </a>
@@ -92,7 +92,7 @@ const LoginPage = () => {
           Don't have an account?{" "}
           <Link
             to="/register"
-            className="text-[#2563eb] hover:text-blue-700 transition-colors font-medium"
+            className="text-primary hover:text-primary-hover transition-colors font-medium"
           >
             Register
           </Link>

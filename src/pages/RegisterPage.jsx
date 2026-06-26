@@ -105,11 +105,11 @@ const RegisterPage = () => {
               label={
                 <>
                   I agree to the{" "}
-                  <a href="#" className="text-[#2563eb] hover:text-blue-700 transition-colors">
+                  <a href="#" className="text-primary hover:text-primary-hover transition-colors">
                     Privacy Policy
                   </a>{" "}
                   and{" "}
-                  <a href="#" className="text-[#2563eb] hover:text-blue-700 transition-colors">
+                  <a href="#" className="text-primary hover:text-primary-hover transition-colors">
                     Terms of Service
                   </a>
                 </>
@@ -132,7 +132,7 @@ const RegisterPage = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-[#2563eb] hover:text-blue-700 transition-colors font-medium"
+            className="text-primary hover:text-primary-hover transition-colors font-medium"
           >
             Log in
           </Link>

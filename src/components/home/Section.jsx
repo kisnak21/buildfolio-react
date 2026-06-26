@@ -10,7 +10,7 @@ const Section = ({ id, title, subtitle, viewAllHref, children }) => {
           {viewAllHref && (
             <a
               href={viewAllHref}
-              className="text-sm text-[#2563eb] hover:text-blue-700 transition-colors"
+              className="text-sm text-primary hover:text-primary-hover transition-colors"
             >
               View all →
             </a>

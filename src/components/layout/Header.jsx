@@ -15,7 +15,7 @@ const Header = () => {
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* logo buildfolio */}
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-[#2563eb] rounded-md flex items-center justify-center">
+          <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="1" y="1" width="5" height="5" rx="1" fill="white" />
               <rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity="0.6" />
@@ -46,7 +46,7 @@ const Header = () => {
           </Link>
           <Link
             to="/register"
-            className="text-sm bg-[#2563eb] hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition-colors"
+            className="text-sm bg-primary hover:bg-primary-hover text-white px-3 py-1.5 rounded-lg transition-colors"
           >
             Sign up
           </Link>
@@ -111,7 +111,7 @@ const Header = () => {
               <Link
                 to="/register"
                 onClick={() => setMenuOpen(false)}
-                className="text-sm bg-[#2563eb] hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition-colors text-center"
+                className="text-sm bg-primary hover:bg-primary-hover text-white px-3 py-2 rounded-lg transition-colors text-center"
               >
                 Sign up
               </Link>

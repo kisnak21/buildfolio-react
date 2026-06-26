@@ -7,7 +7,7 @@ const Checkbox = ({ id, label, checked, onChange, error }) => {
           id={id}
           checked={checked}
           onChange={onChange}
-          className="w-4 h-4 mt-0.5 rounded border-gray-300 bg-white accent-[#2563eb] cursor-pointer shrink-0"
+          className="w-4 h-4 mt-0.5 rounded border-gray-300 bg-white accent-primary cursor-pointer shrink-0"
         />
         <label
           htmlFor={id}

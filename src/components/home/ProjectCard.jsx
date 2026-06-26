@@ -43,7 +43,7 @@ const ProjectCard = ({ project }) => {
           <a href={github} className="text-xs text-gray-400 hover:text-gray-700 transition-colors">
             GitHub
           </a>
-          <a href={live} className="text-xs text-[#2563eb] hover:text-blue-700 transition-colors">
+          <a href={live} className="text-xs text-primary hover:text-primary-hover transition-colors">
             Live →
           </a>
         </div>

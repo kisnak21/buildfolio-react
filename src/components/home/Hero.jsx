@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <section className="max-w-6xl mx-auto px-4 py-24 text-center">
       <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-3 py-1 mb-6">
-        <span className="w-1.5 h-1.5 bg-[#2563eb] rounded-full"></span>
+        <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
         <span className="text-xs text-blue-600">Open to developers worldwide</span>
       </div>
 
@@ -13,7 +13,7 @@ const Hero = () => {
         <br />
         Share Ideas.
         <br />
-        <span className="text-[#2563eb]">Build Your Portfolio.</span>
+        <span className="text-primary">Build Your Portfolio.</span>
       </h1>
 
       <p className="text-base md:text-lg text-gray-500 max-w-xl mx-auto mb-10 leading-relaxed">
@@ -24,7 +24,7 @@ const Hero = () => {
       <div className="flex items-center justify-center gap-3 flex-wrap">
         <a
           href="#projects"
-          className="bg-[#2563eb] hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors"
+          className="bg-primary hover:bg-primary-hover text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors"
         >
           Explore Projects
         </a>

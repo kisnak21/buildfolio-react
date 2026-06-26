@@ -24,8 +24,8 @@ const Input = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`w-full bg-gray-50 border rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#2563eb]/20 transition-colors ${
-          error ? "border-red-500" : "border-gray-200 focus:border-[#2563eb]"
+        className={`w-full bg-gray-50 border rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-primary/20 transition-colors ${
+          error ? "border-red-500" : "border-gray-200 focus:border-primary"
         }`}
       />
       {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
