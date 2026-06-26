@@ -1,4 +1,4 @@
-function Checkbox({ id, label, checked, onChange, error }) {
+const Checkbox = ({ id, label, checked, onChange, error }) => {
   return (
     <div className="mb-1">
       <div className="flex items-start gap-2">
@@ -19,6 +19,6 @@ function Checkbox({ id, label, checked, onChange, error }) {
       {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
     </div>
   );
-}
+};
 
 export default Checkbox;

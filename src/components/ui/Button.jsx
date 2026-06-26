@@ -1,12 +1,11 @@
-function Button({
+const Button = ({
   children,
   type = "button",
   variant = "primary",
   fullWidth = false,
   onClick,
-}) {
-  const baseStyles =
-    "text-sm font-medium rounded-lg py-2.5 transition-colors";
+}) => {
+  const baseStyles = "text-sm font-medium rounded-lg py-2.5 transition-colors";
 
   const variantStyles = {
     primary: "bg-[#2563eb] hover:bg-blue-700 text-white",
@@ -25,6 +24,6 @@ function Button({
       {children}
     </button>
   );
-}
+};
 
 export default Button;
