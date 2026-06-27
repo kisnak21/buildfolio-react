@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import AvatarDropdown from './AvatarDropdown'
 
 const navLinks = [
   { label: 'Projects', href: '#projects' },
@@ -7,7 +8,7 @@ const navLinks = [
   { label: 'Technologies', href: '#technologies' },
 ]
 
-const Header = () => {
+const Header = ({ currentUser, onLogout }) => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -16,11 +17,41 @@ const Header = () => {
         {/* logo buildfolio */}
         <Link to='/' className='flex items-center gap-2'>
           <div className='w-7 h-7 bg-primary rounded-md flex items-center justify-center'>
-            <svg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              width='14'
+              height='14'
+              viewBox='0 0 14 14'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+            >
               <rect x='1' y='1' width='5' height='5' rx='1' fill='white' />
-              <rect x='8' y='1' width='5' height='5' rx='1' fill='white' opacity='0.6' />
-              <rect x='1' y='8' width='5' height='5' rx='1' fill='white' opacity='0.6' />
-              <rect x='8' y='8' width='5' height='5' rx='1' fill='white' opacity='0.3' />
+              <rect
+                x='8'
+                y='1'
+                width='5'
+                height='5'
+                rx='1'
+                fill='white'
+                opacity='0.6'
+              />
+              <rect
+                x='1'
+                y='8'
+                width='5'
+                height='5'
+                rx='1'
+                fill='white'
+                opacity='0.6'
+              />
+              <rect
+                x='8'
+                y='8'
+                width='5'
+                height='5'
+                rx='1'
+                fill='white'
+                opacity='0.3'
+              />
             </svg>
           </div>
           <span className='text-sm font-medium text-gray-900'>Buildfolio</span>
@@ -41,20 +72,24 @@ const Header = () => {
 
         {/* auth buttons */}
         <div className='hidden md:flex items-center gap-3'>
-          <Link to='/login' className='text-sm text-gray-500 hover:text-gray-900 transition-colors'>
-            Log in
-          </Link>
-          <Link
-            to='/register'
-            className='text-sm bg-primary hover:bg-primary-hover text-white px-3 py-1.5 rounded-lg transition-colors'
-          >
-            Sign up
-          </Link>
-          <img
-            src='https://api.dicebear.com/9.x/pixel-art/svg?seed=buildfolio'
-            alt='Profile'
-            className='w-8 h-8 rounded-full border border-gray-200'
-          />
+          {currentUser ? (
+            <AvatarDropdown user={currentUser} onLogout={onLogout} />
+          ) : (
+            <>
+              <Link
+                to='/login'
+                className='text-sm text-gray-500 hover:text-gray-900 transition-colors'
+              >
+                Log in
+              </Link>
+              <Link
+                to='/register'
+                className='text-sm bg-primary hover:bg-primary-hover text-white px-3 py-1.5 rounded-lg transition-colors'
+              >
+                Sign up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* hamburger */}
@@ -101,20 +136,43 @@ const Header = () => {
               </a>
             ))}
             <div className='flex flex-col gap-2 pt-2 border-t border-gray-200'>
-              <Link
-                to='/login'
-                onClick={() => setMenuOpen(false)}
-                className='text-sm text-gray-500 hover:text-gray-900 transition-colors'
-              >
-                Log in
-              </Link>
-              <Link
-                to='/register'
-                onClick={() => setMenuOpen(false)}
-                className='text-sm bg-primary hover:bg-primary-hover text-white px-3 py-2 rounded-lg transition-colors text-center'
-              >
-                Sign up
-              </Link>
+              {currentUser ? (
+                <>
+                  <Link
+                    to='/dashboard'
+                    onClick={() => setMenuOpen(false)}
+                    className='text-sm text-gray-500 hover:text-gray-900 transition-colors'
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false)
+                      onLogout()
+                    }}
+                    className='text-sm text-red-600 hover:text-red-700 transition-colors text-left'
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to='/login'
+                    onClick={() => setMenuOpen(false)}
+                    className='text-sm text-gray-500 hover:text-gray-900 transition-colors'
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    to='/register'
+                    onClick={() => setMenuOpen(false)}
+                    className='text-sm bg-primary hover:bg-primary-hover text-white px-3 py-2 rounded-lg transition-colors text-center'
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>
