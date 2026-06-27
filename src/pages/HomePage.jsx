@@ -7,14 +7,14 @@ import CategoryCard from '../components/home/CategoryCard'
 import TechPill from '../components/home/TechPill'
 import { categories, technologies } from '../data/projects'
 
-const HomePage = ({ projects }) => {
+const HomePage = ({ projects, currentUser, onLogout }) => {
   const sortedByLikes = [...projects].sort((a, b) => b.likes - a.likes)
   const featuredProjects = sortedByLikes.slice(0, 3)
   const favoriteProjects = sortedByLikes.slice(3, 6)
 
   return (
     <div className='bg-gray-50 text-gray-900'>
-      <Header />
+      <Header currentUser={currentUser} onLogout={onLogout} />
 
       <main>
         <Hero />

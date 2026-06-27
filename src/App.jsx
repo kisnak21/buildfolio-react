@@ -10,6 +10,15 @@ import { projects as initialProjects } from './data/projects'
 
 const App = () => {
   const [projects, setProjects] = useState(initialProjects)
+  const [currentUser, setCurrentUser] = useState(null)
+
+  const handleLogin = (user) => {
+    setCurrentUser(user)
+  }
+
+  const handleLogout = () => {
+    setCurrentUser(null)
+  }
 
   const addProject = (project) => {
     const newProject = {
@@ -22,7 +31,7 @@ const App = () => {
 
   const updateProject = (id, updatedFields) => {
     setProjects((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...updatedFields } : p))
+      prev.map((p) => (p.id === id ? { ...p, ...updatedFields } : p)),
     )
   }
 
@@ -33,23 +42,51 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<HomePage projects={projects} />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage />} />
         <Route
-          path='/dashboard'
+          path="/"
           element={
-            <DashboardPage projects={projects} onDelete={deleteProject} />
+            <HomePage
+              projects={projects}
+              currentUser={currentUser}
+              onLogout={handleLogout}
+            />
+          }
+        />
+        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+        <Route
+          path="/register"
+          element={<RegisterPage onLogin={handleLogin} />}
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <DashboardPage
+              projects={projects}
+              onDelete={deleteProject}
+              currentUser={currentUser}
+              onLogout={handleLogout}
+            />
           }
         />
         <Route
-          path='/projects/new'
-          element={<NewProjectPage onAdd={addProject} />}
+          path="/projects/new"
+          element={
+            <NewProjectPage
+              onAdd={addProject}
+              currentUser={currentUser}
+              onLogout={handleLogout}
+            />
+          }
         />
         <Route
-          path='/projects/edit/:id'
+          path="/projects/edit/:id"
           element={
-            <EditProjectPage projects={projects} onUpdate={updateProject} />
+            <EditProjectPage
+              projects={projects}
+              onUpdate={updateProject}
+              currentUser={currentUser}
+              onLogout={handleLogout}
+            />
           }
         />
       </Routes>
