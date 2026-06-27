@@ -5,11 +5,12 @@ import Section from '../components/home/Section'
 import ProjectCard from '../components/home/ProjectCard'
 import CategoryCard from '../components/home/CategoryCard'
 import TechPill from '../components/home/TechPill'
-import { projects, categories, technologies } from '../data/projects'
+import { categories, technologies } from '../data/projects'
 
-const HomePage = () => {
-  const featuredProjects = projects.slice(0, 3)
-  const favoriteProjects = projects.slice(3, 6)
+const HomePage = ({ projects }) => {
+  const sortedByLikes = [...projects].sort((a, b) => b.likes - a.likes)
+  const featuredProjects = sortedByLikes.slice(0, 3)
+  const favoriteProjects = sortedByLikes.slice(3, 6)
 
   return (
     <div className='bg-gray-50 text-gray-900'>
