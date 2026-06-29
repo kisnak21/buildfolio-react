@@ -23,6 +23,14 @@ const App = () => {
     fetchProjects()
   }, [])
 
+  // stored users to local storage
+  useEffect(() => {
+    const stored = localStorage.getItem('buildfolio_user')
+    if (stored) {
+      setCurrentUser(JSON.parse(stored))
+    }
+  }, [])
+
   const fetchProjects = async () => {
     setLoading(true)
     setError(null)
@@ -51,8 +59,15 @@ const App = () => {
     setProjects((prev) => prev.filter((p) => p.id !== id))
   }
 
-  const handleLogin = (user) => setCurrentUser(user)
-  const handleLogout = () => setCurrentUser(null)
+  const handleLogin = (user) => {
+    setCurrentUser(user)
+    localStorage.setItem('buildfolio_user', JSON.stringify(user))
+  }
+
+  const handleLogout = () => {
+    setCurrentUser(null)
+    localStorage.removeItem('buildfolio_user')
+  }
 
   return (
     <BrowserRouter>

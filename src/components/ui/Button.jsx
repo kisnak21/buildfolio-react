@@ -3,6 +3,7 @@ const Button = ({
   type = 'button',
   variant = 'primary',
   fullWidth = false,
+  disabled = false,
   onClick,
 }) => {
   const baseStyles = 'text-sm font-medium rounded-lg py-2.5 transition-colors'
@@ -19,7 +20,10 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
-      className={`${baseStyles} ${variantStyles[variant]} ${widthStyle}`}
+      disabled={disabled}
+      className={`${baseStyles} ${variantStyles[variant]} ${widthStyle} ${
+        disabled ? 'opacity-50 cursor-not-allowed' : ''
+      }`}
     >
       {children}
     </button>

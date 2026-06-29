@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { getUsers, createUser } from '../services/api/usersApi'
 import AuthCard from '../components/layout/AuthCard'
 import Input from '../components/ui/Input'
 import Checkbox from '../components/ui/Checkbox'
@@ -19,7 +20,9 @@ const RegisterPage = ({ onLogin }) => {
   const [agreed, setAgreed] = useState(false)
   const [errors, setErrors] = useState({})
 
-  const handleSubmit = (e) => {
+  const [submitting, setSubmitting] = useState(false)
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const newErrors = {}
 
@@ -45,61 +48,79 @@ const RegisterPage = ({ onLogin }) => {
 
     setErrors(newErrors)
 
-    if (Object.keys(newErrors).length === 0) {
-      onLogin({ name, email })
+    if (Object.keys(newErrors).length > 0) return
+
+    setSubmitting(true)
+    try {
+      const users = await getUsers()
+      const existingUser = users.find(
+        (u) => u.email.toLowerCase() === email.trim().toLowerCase(),
+      )
+
+      if (existingUser) {
+        setErrors({ email: 'An account with this email already exists.' })
+        return
+      }
+
+      await createUser({ name: name.trim(), email: email.trim(), password })
+      onLogin({ name: name.trim(), email: email.trim() })
       navigate('/')
+    } catch (err) {
+      setErrors({ confirmPassword: 'Something went wrong. Please try again.' })
+    } finally {
+      setSubmitting(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gray-50">
+    <div className='min-h-screen flex items-center justify-center px-4 py-10 bg-gray-50'>
       <AuthCard
-        title="Create an account"
-        subtitle="Start building your portfolio today"
+        title='Create an account'
+        subtitle='Start building your portfolio today'
       >
         <form onSubmit={handleSubmit} noValidate>
           <Input
-            label="Full name"
-            id="name"
-            placeholder="John Doe"
+            label='Full name'
+            id='name'
+            placeholder='John Doe'
             value={name}
             onChange={(e) => setName(e.target.value)}
             error={errors.name}
           />
 
           <Input
-            label="Email"
-            type="email"
-            id="email"
-            placeholder="you@example.com"
+            label='Email'
+            type='email'
+            id='email'
+            placeholder='you@example.com'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             error={errors.email}
           />
 
           <Input
-            label="Password"
-            type="password"
-            id="password"
-            placeholder="••••••••"
+            label='Password'
+            type='password'
+            id='password'
+            placeholder='••••••••'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             error={errors.password}
           />
 
           <Input
-            label="Confirm password"
-            type="password"
-            id="confirm-password"
-            placeholder="••••••••"
+            label='Confirm password'
+            type='password'
+            id='confirm-password'
+            placeholder='••••••••'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             error={errors.confirmPassword}
           />
 
-          <div className="mb-6">
+          <div className='mb-6'>
             <Checkbox
-              id="privacy"
+              id='privacy'
               checked={agreed}
               onChange={(e) => setAgreed(e.target.checked)}
               error={errors.agreed}
@@ -107,15 +128,15 @@ const RegisterPage = ({ onLogin }) => {
                 <>
                   I agree to the{' '}
                   <a
-                    href="#"
-                    className="text-primary hover:text-primary-hover transition-colors"
+                    href='#'
+                    className='text-primary hover:text-primary-hover transition-colors'
                   >
                     Privacy Policy
                   </a>{' '}
                   and{' '}
                   <a
-                    href="#"
-                    className="text-primary hover:text-primary-hover transition-colors"
+                    href='#'
+                    className='text-primary hover:text-primary-hover transition-colors'
                   >
                     Terms of Service
                   </a>
@@ -124,9 +145,9 @@ const RegisterPage = ({ onLogin }) => {
             />
           </div>
 
-          <div className="mb-3">
-            <Button type="submit" fullWidth>
-              Sign up
+          <div className='mb-3'>
+            <Button type='submit' fullWidth disabled={submitting}>
+              {submitting ? 'Creating account...' : 'Sign up'}
             </Button>
           </div>
 
@@ -135,11 +156,11 @@ const RegisterPage = ({ onLogin }) => {
 
         <Divider />
 
-        <p className="text-center text-sm text-gray-500">
+        <p className='text-center text-sm text-gray-500'>
           Already have an account?{' '}
           <Link
-            to="/login"
-            className="text-primary hover:text-primary-hover transition-colors font-medium"
+            to='/login'
+            className='text-primary hover:text-primary-hover transition-colors font-medium'
           >
             Log in
           </Link>
