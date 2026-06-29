@@ -17,7 +17,7 @@ const HomePage = ({ projects, loading, error, currentUser, onLogout }) => {
       <Header currentUser={currentUser} onLogout={onLogout} />
 
       <main>
-        <Hero />
+        <Hero currentUser={currentUser} />
 
         <Section
           id='projects'

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import HomePage from './pages/HomePage'
@@ -18,6 +19,7 @@ const App = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [currentUser, setCurrentUser] = useState(null)
+  const [authChecked, setAuthChecked] = useState(false)
 
   useEffect(() => {
     fetchProjects()
@@ -29,6 +31,7 @@ const App = () => {
     if (stored) {
       setCurrentUser(JSON.parse(stored))
     }
+    setAuthChecked(true)
   }, [])
 
   const fetchProjects = async () => {
@@ -92,35 +95,41 @@ const App = () => {
         <Route
           path='/dashboard'
           element={
-            <DashboardPage
-              projects={projects}
-              loading={loading}
-              error={error}
-              onDelete={deleteProject}
-              currentUser={currentUser}
-              onLogout={handleLogout}
-            />
+            <ProtectedRoute currentUser={currentUser} authChecked={authChecked}>
+              <DashboardPage
+                projects={projects}
+                loading={loading}
+                error={error}
+                onDelete={deleteProject}
+                currentUser={currentUser}
+                onLogout={handleLogout}
+              />
+            </ProtectedRoute>
           }
         />
         <Route
           path='/projects/new'
           element={
-            <NewProjectPage
-              onAdd={addProject}
-              currentUser={currentUser}
-              onLogout={handleLogout}
-            />
+            <ProtectedRoute currentUser={currentUser} authChecked={authChecked}>
+              <NewProjectPage
+                onAdd={addProject}
+                currentUser={currentUser}
+                onLogout={handleLogout}
+              />
+            </ProtectedRoute>
           }
         />
         <Route
           path='/projects/edit/:id'
           element={
-            <EditProjectPage
-              projects={projects}
-              onUpdate={updateProject}
-              currentUser={currentUser}
-              onLogout={handleLogout}
-            />
+            <ProtectedRoute currentUser={currentUser} authChecked={authChecked}>
+              <EditProjectPage
+                projects={projects}
+                onUpdate={updateProject}
+                currentUser={currentUser}
+                onLogout={handleLogout}
+              />
+            </ProtectedRoute>
           }
         />
       </Routes>
