@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectForm from '../components/dashboard/ProjectForm'
@@ -6,12 +7,18 @@ import ProjectForm from '../components/dashboard/ProjectForm'
 const EditProjectPage = ({ projects, onUpdate, currentUser, onLogout }) => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const [submitError, setSubmitError] = useState(null)
 
-  const project = projects.find((p) => p.id === Number(id))
+  const project = projects.find((p) => p.id === id)
 
-  const handleSubmit = (projectData) => {
-    onUpdate(project.id, projectData)
-    navigate('/dashboard')
+  const handleSubmit = async (projectData) => {
+    setSubmitError(null)
+    try {
+      await onUpdate(project.id, projectData)
+      navigate('/dashboard')
+    } catch (err) {
+      setSubmitError('Failed to update project. Please try again.')
+    }
   }
 
   if (!project) {
@@ -37,7 +44,9 @@ const EditProjectPage = ({ projects, onUpdate, currentUser, onLogout }) => {
         <p className='text-sm text-gray-500 mb-8'>
           Update your project details
         </p>
-
+        {submitError && (
+          <p className='text-sm text-red-500 mb-4'>{submitError}</p>
+        )}
         <ProjectForm
           initialValues={project}
           onSubmit={handleSubmit}

@@ -3,7 +3,14 @@ import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectTable from '../components/dashboard/ProjectTable'
 
-const DashboardPage = ({ projects, onDelete, currentUser, onLogout }) => {
+const DashboardPage = ({
+  projects,
+  loading,
+  error,
+  onDelete,
+  currentUser,
+  onLogout,
+}) => {
   return (
     <div className='bg-gray-50 text-gray-900 min-h-screen flex flex-col'>
       <Header currentUser={currentUser} onLogout={onLogout} />
@@ -24,7 +31,13 @@ const DashboardPage = ({ projects, onDelete, currentUser, onLogout }) => {
           </Link>
         </div>
 
-        <ProjectTable projects={projects} onDelete={onDelete} />
+        {loading && (
+          <p className='text-sm text-gray-400'>Loading projects...</p>
+        )}
+        {error && <p className='text-sm text-red-500'>{error}</p>}
+        {!loading && !error && (
+          <ProjectTable projects={projects} onDelete={onDelete} />
+        )}
       </main>
 
       <Footer />

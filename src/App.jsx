@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
@@ -6,62 +6,81 @@ import HomePage from './pages/HomePage'
 import DashboardPage from './pages/DashboardPage'
 import NewProjectPage from './pages/NewProjectPage'
 import EditProjectPage from './pages/EditProjectPage'
-import { projects as initialProjects } from './data/projects'
+import {
+  getProjects,
+  createProject,
+  updateProject as updateProjectApi,
+  deleteProject as deleteProjectApi,
+} from './services/api/projectsApi'
 
 const App = () => {
-  const [projects, setProjects] = useState(initialProjects)
+  const [projects, setProjects] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [currentUser, setCurrentUser] = useState(null)
 
-  const handleLogin = (user) => {
-    setCurrentUser(user)
-  }
+  useEffect(() => {
+    fetchProjects()
+  }, [])
 
-  const handleLogout = () => {
-    setCurrentUser(null)
-  }
-
-  const addProject = (project) => {
-    const newProject = {
-      ...project,
-      id: Date.now(),
-      likes: 0,
+  const fetchProjects = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await getProjects()
+      setProjects(data)
+    } catch (err) {
+      setError('Failed to load projects. Please try again.')
+    } finally {
+      setLoading(false)
     }
+  }
+
+  const addProject = async (project) => {
+    const newProject = await createProject({ ...project, likes: 0 })
     setProjects((prev) => [...prev, newProject])
   }
 
-  const updateProject = (id, updatedFields) => {
-    setProjects((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...updatedFields } : p)),
-    )
+  const updateProject = async (id, updatedFields) => {
+    const updated = await updateProjectApi(id, updatedFields)
+    setProjects((prev) => prev.map((p) => (p.id === id ? updated : p)))
   }
 
-  const deleteProject = (id) => {
+  const deleteProject = async (id) => {
+    await deleteProjectApi(id)
     setProjects((prev) => prev.filter((p) => p.id !== id))
   }
+
+  const handleLogin = (user) => setCurrentUser(user)
+  const handleLogout = () => setCurrentUser(null)
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          path='/'
           element={
             <HomePage
               projects={projects}
+              loading={loading}
+              error={error}
               currentUser={currentUser}
               onLogout={handleLogout}
             />
           }
         />
-        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+        <Route path='/login' element={<LoginPage onLogin={handleLogin} />} />
         <Route
-          path="/register"
+          path='/register'
           element={<RegisterPage onLogin={handleLogin} />}
         />
         <Route
-          path="/dashboard"
+          path='/dashboard'
           element={
             <DashboardPage
               projects={projects}
+              loading={loading}
+              error={error}
               onDelete={deleteProject}
               currentUser={currentUser}
               onLogout={handleLogout}
@@ -69,7 +88,7 @@ const App = () => {
           }
         />
         <Route
-          path="/projects/new"
+          path='/projects/new'
           element={
             <NewProjectPage
               onAdd={addProject}
@@ -79,7 +98,7 @@ const App = () => {
           }
         />
         <Route
-          path="/projects/edit/:id"
+          path='/projects/edit/:id'
           element={
             <EditProjectPage
               projects={projects}

@@ -4,28 +4,49 @@ import ConfirmDialog from '../ui/ConfirmDialog'
 
 const ProjectTable = ({ projects, onDelete }) => {
   const [deleteTarget, setDeleteTarget] = useState(null)
+  const [deleteError, setDeleteError] = useState(null)
 
-  const handleConfirmDelete = () => {
-    onDelete(deleteTarget.id)
-    setDeleteTarget(null)
+  const handleConfirmDelete = async () => {
+    try {
+      await onDelete(deleteTarget.id)
+      setDeleteTarget(null)
+    } catch (err) {
+      setDeleteError('Failed to delete project. Please try again.')
+    }
   }
 
   return (
     <>
+      {deleteError && (
+        <p className='text-sm text-red-500 mb-3'>{deleteError}</p>
+      )}
       <div className='bg-white border border-gray-200 rounded-xl overflow-hidden'>
         <table className='w-full text-sm'>
           <thead className='bg-gray-50 border-b border-gray-200'>
             <tr>
-              <th className='text-left font-medium text-gray-500 px-4 py-3'>Title</th>
-              <th className='text-left font-medium text-gray-500 px-4 py-3'>Category</th>
-              <th className='text-left font-medium text-gray-500 px-4 py-3'>Likes</th>
-              <th className='text-right font-medium text-gray-500 px-4 py-3'>Actions</th>
+              <th className='text-left font-medium text-gray-500 px-4 py-3'>
+                Title
+              </th>
+              <th className='text-left font-medium text-gray-500 px-4 py-3'>
+                Category
+              </th>
+              <th className='text-left font-medium text-gray-500 px-4 py-3'>
+                Likes
+              </th>
+              <th className='text-right font-medium text-gray-500 px-4 py-3'>
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {projects.map((project) => (
-              <tr key={project.id} className='border-b border-gray-100 last:border-0'>
-                <td className='px-4 py-3 font-medium text-gray-900'>{project.title}</td>
+              <tr
+                key={project.id}
+                className='border-b border-gray-100 last:border-0'
+              >
+                <td className='px-4 py-3 font-medium text-gray-900'>
+                  {project.title}
+                </td>
                 <td className='px-4 py-3'>
                   <span className='text-xs bg-blue-50 text-primary border border-blue-100 px-2 py-0.5 rounded-md font-medium'>
                     {project.category}
