@@ -62,6 +62,13 @@ const App = () => {
     setProjects((prev) => prev.filter((p) => p.id !== id))
   }
 
+  const likeProject = async (id) => {
+    const project = projects.find((p) => p.id === id)
+    if (!project) return
+    const updated = await updateProjectApi(id, { likes: project.likes + 1 })
+    setProjects((prev) => prev.map((p) => (p.id === id ? updated : p)))
+  }
+
   const handleLogin = (user) => {
     setCurrentUser(user)
     localStorage.setItem('buildfolio_user', JSON.stringify(user))
@@ -84,6 +91,7 @@ const App = () => {
               error={error}
               currentUser={currentUser}
               onLogout={handleLogout}
+              onLike={likeProject}
             />
           }
         />

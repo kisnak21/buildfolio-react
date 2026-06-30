@@ -7,7 +7,14 @@ import CategoryCard from '../components/home/CategoryCard'
 import TechPill from '../components/home/TechPill'
 import { categories, technologies } from '../data/projects'
 
-const HomePage = ({ projects, loading, error, currentUser, onLogout }) => {
+const HomePage = ({
+  projects,
+  loading,
+  error,
+  currentUser,
+  onLogout,
+  onLike,
+}) => {
   const sortedByLikes = [...projects].sort((a, b) => b.likes - a.likes)
   const featuredProjects = sortedByLikes.slice(0, 3)
   const favoriteProjects = sortedByLikes.slice(3, 6)
@@ -32,7 +39,11 @@ const HomePage = ({ projects, loading, error, currentUser, onLogout }) => {
           {!loading && !error && (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
               {featuredProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onLike={onLike}
+                />
               ))}
             </div>
           )}
@@ -75,7 +86,7 @@ const HomePage = ({ projects, loading, error, currentUser, onLogout }) => {
         >
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
             {favoriteProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project} onLike={onLike} />
             ))}
           </div>
         </Section>
