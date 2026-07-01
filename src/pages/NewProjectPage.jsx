@@ -1,26 +1,29 @@
-import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { addProject } from '../store/redux/projectsSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectForm from '../components/dashboard/ProjectForm'
 
-const NewProjectPage = ({ onAdd, currentUser, onLogout }) => {
+const NewProjectPage = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [submitError, setSubmitError] = useState(null)
 
   const handleSubmit = async (projectData) => {
     setSubmitError(null)
-    try {
-      await onAdd(projectData)
+    const result = await dispatch(addProject(projectData))
+    if (addProject.fulfilled.match(result)) {
       navigate('/dashboard')
-    } catch (err) {
-      setSubmitError('Failed to create project. Please try again.')
+    } else {
+      setSubmitError(result.payload)
     }
   }
 
   return (
     <div className='bg-gray-50 text-gray-900 min-h-screen flex flex-col'>
-      <Header currentUser={currentUser} onLogout={onLogout} />
+      <Header />
 
       <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>
         <h1 className='text-xl font-semibold text-gray-900 mb-1'>
@@ -33,7 +36,6 @@ const NewProjectPage = ({ onAdd, currentUser, onLogout }) => {
         {submitError && (
           <p className='text-sm text-red-500 mb-4'>{submitError}</p>
         )}
-
         <ProjectForm onSubmit={handleSubmit} submitLabel='Create Project' />
       </main>
 

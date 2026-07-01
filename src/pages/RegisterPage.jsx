@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../store/redux/authSlice'
 import { getUsers, createUser } from '../services/api/usersApi'
 import AuthCard from '../components/layout/AuthCard'
 import Input from '../components/ui/Input'
@@ -10,7 +12,8 @@ import Divider from '../components/ui/Divider'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const RegisterPage = ({ onLogin }) => {
+const RegisterPage = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [name, setName] = useState('')
@@ -63,7 +66,7 @@ const RegisterPage = ({ onLogin }) => {
       }
 
       await createUser({ name: name.trim(), email: email.trim(), password })
-      onLogin({ name: name.trim(), email: email.trim() })
+      dispatch(loginUser({ name: name.trim(), email: email.trim() }))
       navigate('/')
     } catch (err) {
       setErrors({ confirmPassword: 'Something went wrong. Please try again.' })

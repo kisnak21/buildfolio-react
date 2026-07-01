@@ -1,5 +1,7 @@
-import Footer from '../components/layout/Footer'
+import { useSelector, useDispatch } from 'react-redux'
+import { likeProject } from '../store/redux/projectsSlice'
 import Header from '../components/layout/Header'
+import Footer from '../components/layout/Footer'
 import Hero from '../components/home/Hero'
 import Section from '../components/home/Section'
 import ProjectCard from '../components/home/ProjectCard'
@@ -7,21 +9,26 @@ import CategoryCard from '../components/home/CategoryCard'
 import TechPill from '../components/home/TechPill'
 import { categories, technologies } from '../data/projects'
 
-const HomePage = ({
-  projects,
-  loading,
-  error,
-  currentUser,
-  onLogout,
-  onLike,
-}) => {
+const HomePage = () => {
+  const dispatch = useDispatch()
+  const {
+    items: projects,
+    loading,
+    error,
+  } = useSelector((state) => state.projects)
+  const { currentUser } = useSelector((state) => state.auth)
+
   const sortedByLikes = [...projects].sort((a, b) => b.likes - a.likes)
   const featuredProjects = sortedByLikes.slice(0, 3)
   const favoriteProjects = sortedByLikes.slice(3, 6)
 
+  const handleLike = (id, currentLikes) => {
+    dispatch(likeProject({ id, currentLikes }))
+  }
+
   return (
     <div className='bg-gray-50 text-gray-900'>
-      <Header currentUser={currentUser} onLogout={onLogout} />
+      <Header />
 
       <main>
         <Hero currentUser={currentUser} />
@@ -42,7 +49,7 @@ const HomePage = ({
                 <ProjectCard
                   key={project.id}
                   project={project}
-                  onLike={onLike}
+                  onLike={handleLike}
                 />
               ))}
             </div>
@@ -54,17 +61,11 @@ const HomePage = ({
           title='Browse by Category'
           subtitle='Find projects that match your interests'
         >
-          {loading && (
-            <p className='text-sm text-gray-400'>Loading categories...</p>
-          )}
-          {error && <p className='text-sm text-red-500'>{error}</p>}
-          {!loading && !error && (
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3'>
-              {categories.map((category) => (
-                <CategoryCard key={category.name} {...category} />
-              ))}
-            </div>
-          )}
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3'>
+            {categories.map((category) => (
+              <CategoryCard key={category.name} {...category} />
+            ))}
+          </div>
         </Section>
 
         <Section
@@ -84,11 +85,21 @@ const HomePage = ({
           subtitle='Most liked projects this month'
           viewAllHref='#'
         >
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            {favoriteProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} onLike={onLike} />
-            ))}
-          </div>
+          {loading && (
+            <p className='text-sm text-gray-400'>Loading projects...</p>
+          )}
+          {error && <p className='text-sm text-red-500'>{error}</p>}
+          {!loading && !error && (
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+              {favoriteProjects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onLike={handleLike}
+                />
+              ))}
+            </div>
+          )}
         </Section>
       </main>
 

@@ -1,30 +1,37 @@
-import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams, useNavigate } from 'react-router-dom'
+import { updateProject } from '../store/redux/projectsSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectForm from '../components/dashboard/ProjectForm'
 
-const EditProjectPage = ({ projects, onUpdate, currentUser, onLogout }) => {
-  const { id } = useParams()
+const EditProjectPage = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { id } = useParams()
   const [submitError, setSubmitError] = useState(null)
 
-  const project = projects.find((p) => p.id === id)
+  const project = useSelector((state) =>
+    state.projects.items.find((p) => p.id === id),
+  )
 
   const handleSubmit = async (projectData) => {
     setSubmitError(null)
-    try {
-      await onUpdate(project.id, projectData)
+    const result = await dispatch(
+      updateProject({ id: project.id, updatedFields: projectData }),
+    )
+    if (updateProject.fulfilled.match(result)) {
       navigate('/dashboard')
-    } catch (err) {
-      setSubmitError('Failed to update project. Please try again.')
+    } else {
+      setSubmitError(result.payload)
     }
   }
 
   if (!project) {
     return (
       <div className='bg-gray-50 text-gray-900 min-h-screen flex flex-col'>
-        <Header currentUser={currentUser} onLogout={onLogout} />
+        <Header />
         <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>
           <p className='text-sm text-gray-500'>Project not found.</p>
         </main>
@@ -35,7 +42,7 @@ const EditProjectPage = ({ projects, onUpdate, currentUser, onLogout }) => {
 
   return (
     <div className='bg-gray-50 text-gray-900 min-h-screen flex flex-col'>
-      <Header currentUser={currentUser} onLogout={onLogout} />
+      <Header />
 
       <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>
         <h1 className='text-xl font-semibold text-gray-900 mb-1'>
@@ -44,6 +51,7 @@ const EditProjectPage = ({ projects, onUpdate, currentUser, onLogout }) => {
         <p className='text-sm text-gray-500 mb-8'>
           Update your project details
         </p>
+
         {submitError && (
           <p className='text-sm text-red-500 mb-4'>{submitError}</p>
         )}

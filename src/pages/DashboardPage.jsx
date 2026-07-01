@@ -1,19 +1,25 @@
+import { useSelector, useDispatch } from 'react-redux'
+import { deleteProject } from '../store/redux/projectsSlice'
 import { Link } from 'react-router-dom'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectTable from '../components/dashboard/ProjectTable'
 
-const DashboardPage = ({
-  projects,
-  loading,
-  error,
-  onDelete,
-  currentUser,
-  onLogout,
-}) => {
+const DashboardPage = () => {
+  const dispatch = useDispatch()
+  const {
+    items: projects,
+    loading,
+    error,
+  } = useSelector((state) => state.projects)
+
+  const handleDelete = (id) => {
+    dispatch(deleteProject(id))
+  }
+
   return (
     <div className='bg-gray-50 text-gray-900 min-h-screen flex flex-col'>
-      <Header currentUser={currentUser} onLogout={onLogout} />
+      <Header />
 
       <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>
         <div className='flex items-center justify-between mb-8'>
@@ -36,7 +42,7 @@ const DashboardPage = ({
         )}
         {error && <p className='text-sm text-red-500'>{error}</p>}
         {!loading && !error && (
-          <ProjectTable projects={projects} onDelete={onDelete} />
+          <ProjectTable projects={projects} onDelete={handleDelete} />
         )}
       </main>
 

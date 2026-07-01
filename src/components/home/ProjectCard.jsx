@@ -20,7 +20,7 @@ const ProjectCard = ({ project, onLike }) => {
         <button
           onClick={(e) => {
             e.stopPropagation()
-            onLike(id)
+            onLike(id, likes)
           }}
           className='flex items-center gap-1 text-gray-400 hover:text-red-500 transition-colors'
         >

@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutUser } from '../../store/redux/authSlice'
 import AvatarDropdown from './AvatarDropdown'
 
 const navLinks = [
@@ -8,8 +10,14 @@ const navLinks = [
   { label: 'Technologies', href: '#technologies' },
 ]
 
-const Header = ({ currentUser, onLogout }) => {
+const Header = () => {
+  const dispatch = useDispatch()
+  const { currentUser } = useSelector((state) => state.auth)
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const handleLogout = () => {
+    dispatch(logoutUser())
+  }
 
   return (
     <header className='border-b border-gray-200 sticky top-0 z-50 bg-white/80 backdrop-blur-sm'>
@@ -73,7 +81,7 @@ const Header = ({ currentUser, onLogout }) => {
         {/* auth buttons */}
         <div className='hidden md:flex items-center gap-3'>
           {currentUser ? (
-            <AvatarDropdown user={currentUser} onLogout={onLogout} />
+            <AvatarDropdown user={currentUser} onLogout={handleLogout} />
           ) : (
             <>
               <Link
@@ -148,7 +156,7 @@ const Header = ({ currentUser, onLogout }) => {
                   <button
                     onClick={() => {
                       setMenuOpen(false)
-                      onLogout()
+                      handleLogout()
                     }}
                     className='text-sm text-red-600 hover:text-red-700 transition-colors text-left'
                   >

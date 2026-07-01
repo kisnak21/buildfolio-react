@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../store/redux/authSlice'
 import { getUsers } from '../services/api/usersApi'
 import AuthCard from '../components/layout/AuthCard'
 import Input from '../components/ui/Input'
@@ -10,7 +12,8 @@ import Divider from '../components/ui/Divider'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const LoginPage = ({ onLogin }) => {
+const LoginPage = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
@@ -52,7 +55,7 @@ const LoginPage = ({ onLogin }) => {
         return
       }
 
-      onLogin({ name: matchedUser.name, email: matchedUser.email })
+      dispatch(loginUser({ name: matchedUser.name, email: matchedUser.email }))
       navigate('/')
     } catch (err) {
       setErrors({ password: 'Something went wrong. Please try again.' })
