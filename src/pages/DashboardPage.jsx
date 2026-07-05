@@ -12,6 +12,11 @@ const DashboardPage = () => {
     loading,
     error,
   } = useSelector((state) => state.projects)
+  const { currentUser, bookmarks } = useSelector((state) => state.auth)
+
+  const userProjects = projects.filter((p) => p.author === currentUser?.name)
+  const totalLikes = userProjects.reduce((sum, p) => sum + (p.likes || 0), 0)
+  const totalBookmarks = bookmarks.length
 
   const handleDelete = (id) => {
     dispatch(deleteProject(id))
@@ -35,6 +40,26 @@ const DashboardPage = () => {
           >
             + New Project
           </Link>
+        </div>
+
+        {/* Stats */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-8'>
+          <div className='bg-white border border-gray-200 rounded-xl p-5'>
+            <p className='text-xs text-gray-500 mb-1'>Total Projects</p>
+            <p className='text-2xl font-semibold text-gray-900'>
+              {userProjects.length}
+            </p>
+          </div>
+          <div className='bg-white border border-gray-200 rounded-xl p-5'>
+            <p className='text-xs text-gray-500 mb-1'>Likes Received</p>
+            <p className='text-2xl font-semibold text-gray-900'>{totalLikes}</p>
+          </div>
+          <div className='bg-white border border-gray-200 rounded-xl p-5'>
+            <p className='text-xs text-gray-500 mb-1'>Bookmarks</p>
+            <p className='text-2xl font-semibold text-gray-900'>
+              {totalBookmarks}
+            </p>
+          </div>
         </div>
 
         {loading && (

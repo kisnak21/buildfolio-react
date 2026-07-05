@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { likeProject } from '../store/redux/projectsSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
@@ -8,7 +9,16 @@ import Section from '../components/home/Section'
 import ProjectCard from '../components/home/ProjectCard'
 import CategoryCard from '../components/home/CategoryCard'
 import TechPill from '../components/home/TechPill'
-import { categories, technologies } from '../data/projects'
+import { technologies } from '../data/projects'
+
+const categoryList = [
+  { icon: '🚀', name: 'SaaS' },
+  { icon: '🤖', name: 'AI' },
+  { icon: '🌐', name: 'Web App' },
+  { icon: '📱', name: 'Mobile App' },
+  { icon: '🔓', name: 'Open Source' },
+  { icon: '🎮', name: 'Game' },
+]
 
 const HomePage = () => {
   const dispatch = useDispatch()
@@ -42,6 +52,22 @@ const HomePage = () => {
   const sortedByLikes = [...filtered].sort((a, b) => b.likes - a.likes)
   const featuredProjects = sortedByLikes.slice(0, 3)
   const favoriteProjects = sortedByLikes.slice(3, 6)
+
+  const derivedCategories = categoryList.map((cat) => ({
+    ...cat,
+    count: projects.filter((p) => p.category === cat.name).length,
+  }))
+
+  const techCounts = technologies.map((tech) => ({
+    ...tech,
+    count: projects.filter(
+      (p) =>
+        Array.isArray(p.technologies) &&
+        p.technologies.some((t) =>
+          t.toLowerCase().includes(tech.name.toLowerCase()),
+        ),
+    ).length,
+  }))
 
   const handleLike = (id, currentLikes) => {
     dispatch(likeProject({ id, currentLikes }))
@@ -118,7 +144,7 @@ const HomePage = () => {
           id='projects'
           title='Featured Projects'
           subtitle='Handpicked by the community'
-          viewAllHref='#'
+          viewAllHref='/projects'
         >
           {loading && (
             <p className='text-sm text-gray-400'>Loading projects...</p>
@@ -143,7 +169,7 @@ const HomePage = () => {
           subtitle='Find projects that match your interests'
         >
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3'>
-            {categories.map((category) => (
+            {derivedCategories.map((category) => (
               <CategoryCard
                 key={category.name}
                 {...category}
@@ -165,8 +191,16 @@ const HomePage = () => {
           subtitle='What developers are building with right now'
         >
           <div className='flex flex-wrap gap-2'>
-            {technologies.map((tech) => (
-              <TechPill key={tech.name} {...tech} />
+            {techCounts.map((tech) => (
+              <TechPill
+                key={tech.name}
+                {...tech}
+                isSelected={selectedTech === tech.name}
+                onClick={() => {
+                  setSelectedTech(selectedTech === tech.name ? '' : tech.name)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+              />
             ))}
           </div>
         </Section>
@@ -174,7 +208,7 @@ const HomePage = () => {
         <Section
           title='Community Favorites'
           subtitle='Most liked projects this month'
-          viewAllHref='#'
+          viewAllHref='/projects'
         >
           {loading && (
             <p className='text-sm text-gray-400'>Loading projects...</p>

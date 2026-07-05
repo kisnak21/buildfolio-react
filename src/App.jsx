@@ -13,6 +13,7 @@ import ProjectDetailPage from './pages/ProjectDetailPage'
 import UserProfilePage from './pages/UserProfilePage'
 import BookmarksPage from './pages/BookmarksPage'
 import SettingsPage from './pages/SettingsPage'
+import ProjectsPage from './pages/ProjectsPage'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -45,6 +46,7 @@ const App = () => {
           }
         />
         <Route path='/projects/:id' element={<ProjectDetailPage />} />
+        <Route path='/projects' element={<ProjectsPage />} />
         <Route
           path='/projects/edit/:id'
           element={
