@@ -10,6 +10,7 @@ import DashboardPage from './pages/DashboardPage'
 import NewProjectPage from './pages/NewProjectPage'
 import EditProjectPage from './pages/EditProjectPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
+import UserProfilePage from './pages/UserProfilePage'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -50,6 +51,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path='/u/:author' element={<UserProfilePage />} />
       </Routes>
     </BrowserRouter>
   )

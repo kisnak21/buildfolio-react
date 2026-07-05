@@ -66,14 +66,22 @@ const ProjectCard = ({ project, onLike }) => {
       </div>
 
       <div className='flex items-center justify-between pt-1 border-t border-gray-100'>
-        <div className='flex items-center gap-2'>
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            navigate(`/u/${author}`)
+          }}
+          className='flex items-center gap-2 hover:opacity-80 transition-opacity'
+        >
           <img
             src={`https://api.dicebear.com/9.x/pixel-art/svg?seed=${author}`}
             className='w-6 h-6 rounded-full border border-gray-200'
             alt={author}
           />
-          <span className='text-xs text-gray-500'>{author}</span>
-        </div>
+          <span className='text-xs text-gray-500 hover:text-gray-900 transition-colors'>
+            {author}
+          </span>
+        </button>
         <div className='flex items-center gap-2'>
           <a
             href={github}
