@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage'
 import DashboardPage from './pages/DashboardPage'
 import NewProjectPage from './pages/NewProjectPage'
 import EditProjectPage from './pages/EditProjectPage'
+import ProjectDetailPage from './pages/ProjectDetailPage'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -40,6 +41,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path='/projects/:id' element={<ProjectDetailPage />} />
         <Route
           path='/projects/edit/:id'
           element={
