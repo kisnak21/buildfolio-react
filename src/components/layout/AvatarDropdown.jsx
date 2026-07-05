@@ -40,6 +40,20 @@ const AvatarDropdown = ({ user, onLogout }) => {
           >
             Dashboard
           </Link>
+          <Link
+            to='/bookmarks'
+            onClick={() => setOpen(false)}
+            className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors'
+          >
+            Bookmarks
+          </Link>
+          <Link
+            to='/settings'
+            onClick={() => setOpen(false)}
+            className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors'
+          >
+            Settings
+          </Link>
           <button
             onClick={() => {
               setOpen(false)

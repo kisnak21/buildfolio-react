@@ -42,8 +42,19 @@ const authSlice = createSlice({
         )
       }
     },
+    updateProfile: (state, action) => {
+      const { name, bio } = action.payload
+      if (state.currentUser) {
+        state.currentUser = { ...state.currentUser, name, bio }
+        localStorage.setItem(
+          'buildfolio_user',
+          JSON.stringify(state.currentUser),
+        )
+      }
+    },
   },
 })
 
-export const { loginUser, logoutUser, toggleBookmark } = authSlice.actions
+export const { loginUser, logoutUser, toggleBookmark, updateProfile } =
+  authSlice.actions
 export default authSlice.reducer

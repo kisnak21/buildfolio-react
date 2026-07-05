@@ -11,6 +11,8 @@ import NewProjectPage from './pages/NewProjectPage'
 import EditProjectPage from './pages/EditProjectPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
 import UserProfilePage from './pages/UserProfilePage'
+import BookmarksPage from './pages/BookmarksPage'
+import SettingsPage from './pages/SettingsPage'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -52,6 +54,22 @@ const App = () => {
           }
         />
         <Route path='/u/:author' element={<UserProfilePage />} />
+        <Route
+          path='/bookmarks'
+          element={
+            <ProtectedRoute currentUser={currentUser} authChecked={authChecked}>
+              <BookmarksPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/settings'
+          element={
+            <ProtectedRoute currentUser={currentUser} authChecked={authChecked}>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )
