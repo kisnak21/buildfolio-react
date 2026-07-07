@@ -21,8 +21,8 @@ const ProjectCard = ({ project, onLike }) => {
       className='group bg-white border border-gray-200 hover:border-blue-300 hover:shadow-sm rounded-xl p-5 flex flex-col gap-4 transition-all cursor-pointer'
     >
       <div className='flex items-start justify-between'>
-        <span className='text-xs bg-blue-50 text-blue-600 border border-blue-100 px-2 py-0.5 rounded-md font-medium'>
-          {category}
+        <span className='text-xs bg-blue-50 text-primary border border-blue-100 px-2 py-0.5 rounded-md font-medium'>
+          {project.category}
         </span>
         <button
           onClick={(e) => {

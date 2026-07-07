@@ -56,7 +56,8 @@ export const likeProject = createAsyncThunk(
   'projects/like',
   async ({ id, currentLikes }, { rejectWithValue }) => {
     try {
-      return await updateProjectApi(id, { likes: currentLikes + 1 })
+      await updateProjectApi(id, { likes: currentLikes + 1 })
+      return { id, likes: currentLikes + 1 }
     } catch (err) {
       return rejectWithValue('Failed to like project.')
     }
@@ -119,7 +120,7 @@ const projectsSlice = createSlice({
     // likeProject
     builder.addCase(likeProject.fulfilled, (state, action) => {
       const index = state.items.findIndex((p) => p.id === action.payload.id)
-      if (index !== -1) state.items[index] = action.payload
+      if (index !== -1) state.items[index].likes = action.payload.likes
     })
   },
 })

@@ -23,8 +23,10 @@ const ProjectsPage = () => {
       search === '' ||
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.description.toLowerCase().includes(search.toLowerCase())
+
     const matchesCategory =
       selectedCategory === '' || p.category === selectedCategory
+
     const matchesTech =
       selectedTech === '' ||
       (Array.isArray(p.technologies) &&

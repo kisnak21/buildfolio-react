@@ -126,10 +126,11 @@ const ProjectDetailPage = () => {
           {/* Author */}
           <div className='flex items-center gap-2 mb-6'>
             <img
-              src={`https://api.dicebear.com/9.x/pixel-art/svg?seed=${project.author || project.author_name}`}
+              src={`https://api.dicebear.com/9.x/pixel-art/svg?seed=${project.author}`}
               className='w-6 h-6 rounded-full border border-gray-200'
-              alt={project.author || project.author_name}
+              alt={project.author}
             />
+            <span className='text-xs text-gray-500'>{project.author}</span>
             <span className='text-xs text-gray-500'>
               {project.author || project.author_name}
             </span>
@@ -176,9 +177,9 @@ const ProjectDetailPage = () => {
             </button>
 
             <div className='flex items-center gap-3 ml-auto'>
-              {project.github_url && project.github_url !== '#' && (
+              {project.github && project.github !== '#' && (
                 <a
-                  href={project.github_url}
+                  href={project.github}
                   target='_blank'
                   rel='noreferrer'
                   className='text-sm text-gray-500 hover:text-gray-900 transition-colors'
@@ -186,9 +187,9 @@ const ProjectDetailPage = () => {
                   GitHub →
                 </a>
               )}
-              {project.live_url && project.live_url !== '#' && (
+              {project.live && project.live !== '#' && (
                 <a
-                  href={project.live_url}
+                  href={project.live}
                   target='_blank'
                   rel='noreferrer'
                   className='text-sm text-primary hover:text-primary-hover transition-colors'
