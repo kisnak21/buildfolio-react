@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProjects } from './store/redux/projectsSlice'
+import { fetchBookmarks } from './store/redux/bookmarksSlice'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
@@ -22,6 +23,12 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchProjects())
   }, [dispatch])
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      dispatch(fetchBookmarks(currentUser.id))
+    }
+  }, [currentUser?.id])
 
   return (
     <BrowserRouter>

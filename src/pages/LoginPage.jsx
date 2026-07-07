@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../store/redux/authSlice'
-import { getUsers } from '../services/api/usersApi'
+import { loginUserApi } from '../services/api/authApi.js'
 import AuthCard from '../components/layout/AuthCard'
 import Input from '../components/ui/Input'
 import Checkbox from '../components/ui/Checkbox'
@@ -40,25 +40,26 @@ const LoginPage = () => {
 
     setSubmitting(true)
     try {
-      const users = await getUsers()
-      const matchedUser = users.find(
-        (u) => u.email.toLowerCase() === email.trim().toLowerCase(),
+      const user = await loginUserApi({ email: email.trim(), password })
+      if (!user) {
+        setErrors({ password: 'Invalid email or password.' })
+        return
+      }
+      dispatch(
+        loginUser({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          bio: user.bio,
+        }),
       )
-
-      if (!matchedUser) {
-        setErrors({ email: 'No account found with this email.' })
-        return
-      }
-
-      if (matchedUser.password !== password) {
-        setErrors({ password: 'Incorrect password.' })
-        return
-      }
-
-      dispatch(loginUser({ name: matchedUser.name, email: matchedUser.email }))
       navigate('/')
     } catch (err) {
-      setErrors({ password: 'Something went wrong. Please try again.' })
+      if (err.response?.status === 401) {
+        setErrors({ password: 'Invalid email or password.' })
+      } else {
+        setErrors({ password: 'Something went wrong. Please try again.' })
+      }
     } finally {
       setSubmitting(false)
     }

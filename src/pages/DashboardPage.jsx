@@ -12,11 +12,11 @@ const DashboardPage = () => {
     loading,
     error,
   } = useSelector((state) => state.projects)
-  const { currentUser, bookmarks } = useSelector((state) => state.auth)
-
+  const { currentUser } = useSelector((state) => state.auth)
+  const { items: bookmarks } = useSelector((state) => state.bookmarks)
+  const totalBookmarks = bookmarks.length
   const userProjects = projects.filter((p) => p.author === currentUser?.name)
   const totalLikes = userProjects.reduce((sum, p) => sum + (p.likes || 0), 0)
-  const totalBookmarks = bookmarks.length
 
   const handleDelete = (id) => {
     dispatch(deleteProject(id))

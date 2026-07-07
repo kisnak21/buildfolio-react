@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { likeProject } from '../store/redux/projectsSlice'
+import { removeBookmark } from '../store/redux/bookmarksSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectCard from '../components/home/ProjectCard'
@@ -9,10 +10,13 @@ const BookmarksPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { bookmarks } = useSelector((state) => state.auth)
+  const { items: bookmarks, loading } = useSelector((state) => state.bookmarks)
   const allProjects = useSelector((state) => state.projects.items)
 
-  const bookmarkedProjects = allProjects.filter((p) => bookmarks.includes(p.id))
+  const bookmarkedProjectIds = bookmarks.map((b) => b.project_id)
+  const bookmarkedProjects = allProjects.filter((p) =>
+    bookmarkedProjectIds.includes(p.id),
+  )
 
   const handleLike = (id, currentLikes) => {
     dispatch(likeProject({ id, currentLikes }))
@@ -30,7 +34,11 @@ const BookmarksPage = () => {
           <p className='text-sm text-gray-500'>Projects you've saved</p>
         </div>
 
-        {bookmarkedProjects.length === 0 ? (
+        {loading && (
+          <p className='text-sm text-gray-400'>Loading bookmarks...</p>
+        )}
+
+        {!loading && bookmarkedProjects.length === 0 && (
           <div className='bg-white border border-gray-200 rounded-xl p-12 text-center'>
             <p className='text-sm text-gray-400 mb-3'>No bookmarks yet.</p>
             <button
@@ -40,7 +48,9 @@ const BookmarksPage = () => {
               Explore projects →
             </button>
           </div>
-        ) : (
+        )}
+
+        {!loading && bookmarkedProjects.length > 0 && (
           <>
             <p className='text-sm text-gray-400 mb-4'>
               {bookmarkedProjects.length} saved

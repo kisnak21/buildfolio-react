@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../store/redux/authSlice'
-import { getUsers, createUser } from '../services/api/usersApi'
+import { registerUser } from '../services/api/authApi.js'
 import AuthCard from '../components/layout/AuthCard'
 import Input from '../components/ui/Input'
 import Checkbox from '../components/ui/Checkbox'
@@ -55,21 +55,28 @@ const RegisterPage = () => {
 
     setSubmitting(true)
     try {
-      const users = await getUsers()
-      const existingUser = users.find(
-        (u) => u.email.toLowerCase() === email.trim().toLowerCase(),
+      const user = await registerUser({
+        name: name.trim(),
+        email: email.trim(),
+        password,
+      })
+      dispatch(
+        loginUser({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          bio: user.bio,
+        }),
       )
-
-      if (existingUser) {
-        setErrors({ email: 'An account with this email already exists.' })
-        return
-      }
-
-      await createUser({ name: name.trim(), email: email.trim(), password })
-      dispatch(loginUser({ name: name.trim(), email: email.trim() }))
       navigate('/')
     } catch (err) {
-      setErrors({ confirmPassword: 'Something went wrong. Please try again.' })
+      if (err.response?.status === 409) {
+        setErrors({ email: 'An account with this email already exists.' })
+      } else {
+        setErrors({
+          confirmPassword: 'Something went wrong. Please try again.',
+        })
+      }
     } finally {
       setSubmitting(false)
     }

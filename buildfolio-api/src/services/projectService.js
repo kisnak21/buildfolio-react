@@ -3,10 +3,20 @@ import crypto from 'crypto'
 
 export const getAllProjects = async () => {
   const result = await pool.query(
-    `SELECT p.*, u.name as author_name, c.name as category_name
+    `SELECT 
+      p.*,
+      u.name as author_name,
+      c.name as category_name,
+      COALESCE(
+        json_agg(t.name) FILTER (WHERE t.name IS NOT NULL),
+        '[]'
+      ) as technologies
      FROM projects p
      LEFT JOIN users u ON p.user_id = u.id
      LEFT JOIN categories c ON p.category_id = c.id
+     LEFT JOIN project_technologies pt ON p.id = pt.project_id
+     LEFT JOIN technologies t ON pt.technology_id = t.id
+     GROUP BY p.id, u.name, c.name
      ORDER BY p.created_at DESC`,
   )
   return result.rows
@@ -14,11 +24,21 @@ export const getAllProjects = async () => {
 
 export const getProjectById = async (id) => {
   const result = await pool.query(
-    `SELECT p.*, u.name as author_name, c.name as category_name
+    `SELECT 
+      p.*,
+      u.name as author_name,
+      c.name as category_name,
+      COALESCE(
+        json_agg(t.name) FILTER (WHERE t.name IS NOT NULL),
+        '[]'
+      ) as technologies
      FROM projects p
      LEFT JOIN users u ON p.user_id = u.id
      LEFT JOIN categories c ON p.category_id = c.id
-     WHERE p.id = $1`,
+     LEFT JOIN project_technologies pt ON p.id = pt.project_id
+     LEFT JOIN technologies t ON pt.technology_id = t.id
+     WHERE p.id = $1
+     GROUP BY p.id, u.name, c.name`,
     [id],
   )
   return result.rows[0] || null
@@ -56,7 +76,16 @@ export const createProject = async ({
 
 export const updateProject = async (
   id,
-  { title, slug, description, thumbnail, github_url, live_url, category_id },
+  {
+    title,
+    slug,
+    description,
+    thumbnail,
+    github_url,
+    live_url,
+    category_id,
+    likes,
+  },
 ) => {
   const result = await pool.query(
     `UPDATE projects
@@ -66,8 +95,9 @@ export const updateProject = async (
          thumbnail = COALESCE($4, thumbnail),
          github_url = COALESCE($5, github_url),
          live_url = COALESCE($6, live_url),
-         category_id = COALESCE($7, category_id)
-     WHERE id = $8
+         category_id = COALESCE($7, category_id),
+         likes = COALESCE($8, likes)
+     WHERE id = $9
      RETURNING *`,
     [
       title || null,
@@ -77,6 +107,7 @@ export const updateProject = async (
       github_url || null,
       live_url || null,
       category_id || null,
+      likes ?? null,
       id,
     ],
   )
