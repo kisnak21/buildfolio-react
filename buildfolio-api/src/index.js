@@ -6,6 +6,7 @@ import projectRoutes from './routes/projectRoutes.js'
 import bookmarkRoutes from './routes/bookmarkRoutes.js'
 import commentRoutes from './routes/commentRoutes.js'
 import upload from './middleware/upload.js'
+import transporter from './config/email.js'
 
 dotenv.config()
 
@@ -28,6 +29,36 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
       url: `http://localhost:3000/upload/${req.file.filename}`,
     },
   })
+})
+
+// POST /api/contact
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, message } = req.body
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'name, email, and message are required',
+      })
+    }
+
+    await transporter.sendMail({
+      from: `"${name}" <${email}>`,
+      to: 'admin@buildfolio.dev',
+      subject: `Contact Form: Message from ${name}`,
+      html: `
+        <h3>New Contact Form Submission</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
+    })
+
+    res.json({ success: true, message: 'Message sent successfully' })
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message })
+  }
 })
 
 // Routes

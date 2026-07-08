@@ -15,6 +15,7 @@ import {
 } from '../store/redux/commentsSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
+import SEO from '../components/ui/SEO'
 
 const ProjectDetailPage = () => {
   const { id } = useParams()
@@ -74,6 +75,10 @@ const ProjectDetailPage = () => {
   if (!project) {
     return (
       <div className='bg-gray-50 min-h-screen flex flex-col'>
+        <SEO
+          title='404 - Project Not Found'
+          description="The project you're looking for doesn't exist or has been moved."
+        />
         <Header />
         <main className='flex-1 max-w-4xl mx-auto px-4 py-12 w-full'>
           <p className='text-sm text-gray-500'>Project not found.</p>
@@ -85,6 +90,11 @@ const ProjectDetailPage = () => {
 
   return (
     <div className='bg-gray-50 min-h-screen flex flex-col'>
+      <SEO
+        title={`${project.title} - Project Detail`}
+        description={project.description}
+        image={project.image || undefined}
+      />
       <Header />
 
       <main className='flex-1 max-w-4xl mx-auto px-4 py-12 w-full'>

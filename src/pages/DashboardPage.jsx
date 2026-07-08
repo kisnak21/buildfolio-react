@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectTable from '../components/dashboard/ProjectTable'
+import SEO from '../components/ui/SEO'
 
 const DashboardPage = () => {
   const dispatch = useDispatch()
@@ -24,6 +25,10 @@ const DashboardPage = () => {
 
   return (
     <div className='bg-gray-50 text-gray-900 min-h-screen flex flex-col'>
+      <SEO
+        title='Dashboard'
+        description='Manage your projects and view statistics on Buildfolio.'
+      />
       <Header />
 
       <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>

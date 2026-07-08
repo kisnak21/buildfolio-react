@@ -5,6 +5,7 @@ import { removeBookmark } from '../store/redux/bookmarksSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectCard from '../components/home/ProjectCard'
+import SEO from '../components/ui/SEO'
 
 const BookmarksPage = () => {
   const dispatch = useDispatch()
@@ -24,6 +25,10 @@ const BookmarksPage = () => {
 
   return (
     <div className='bg-gray-50 min-h-screen flex flex-col'>
+      <SEO
+        title='Bookmarks'
+        description='View and manage your bookmarked projects on Buildfolio.'
+      />
       <Header />
 
       <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>

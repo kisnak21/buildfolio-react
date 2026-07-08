@@ -9,6 +9,7 @@ import Checkbox from '../components/ui/Checkbox'
 import Button from '../components/ui/Button'
 import GoogleButton from '../components/ui/GoogleButton'
 import Divider from '../components/ui/Divider'
+import SEO from '../components/ui/SEO.jsx'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -67,6 +68,10 @@ const LoginPage = () => {
 
   return (
     <div className='min-h-screen flex items-center justify-center px-4 bg-gray-50'>
+      <SEO
+        title='Login'
+        description='Log in to your Buildfolio account to manage your projects and portfolio.'
+      />
       <AuthCard
         title='Welcome back'
         subtitle='Log in to your Buildfolio account'
