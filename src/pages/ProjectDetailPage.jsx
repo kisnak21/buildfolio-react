@@ -15,7 +15,7 @@ import {
 } from '../store/redux/commentsSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
-import SEO from '../components/SEO'
+import SEO from '../components/ui/SEO'
 
 const ProjectDetailPage = () => {
   const { id } = useParams()

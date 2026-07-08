@@ -5,7 +5,7 @@ import { removeBookmark } from '../store/redux/bookmarksSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectCard from '../components/home/ProjectCard'
-import SEO from '../components/SEO'
+import SEO from '../components/ui/SEO'
 
 const BookmarksPage = () => {
   const dispatch = useDispatch()

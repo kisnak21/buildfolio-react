@@ -6,7 +6,7 @@ import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
-import SEO from '../components/SEO.jsx'
+import SEO from '../components/ui/SEO.jsx'
 
 const SettingsPage = () => {
   const dispatch = useDispatch()

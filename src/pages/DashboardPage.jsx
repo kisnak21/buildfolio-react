@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectTable from '../components/dashboard/ProjectTable'
-import SEO from '../components/SEO'
+import SEO from '../components/ui/SEO'
 
 const DashboardPage = () => {
   const dispatch = useDispatch()

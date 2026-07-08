@@ -9,7 +9,7 @@ import Checkbox from '../components/ui/Checkbox'
 import Button from '../components/ui/Button'
 import GoogleButton from '../components/ui/GoogleButton'
 import Divider from '../components/ui/Divider'
-import SEO from '../components/SEO.jsx'
+import SEO from '../components/ui/SEO.jsx'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

@@ -10,7 +10,7 @@ import ProjectCard from '../components/home/ProjectCard'
 import CategoryCard from '../components/home/CategoryCard'
 import ProjectCardSkeleton from '../components/home/ProjectCardSkeleton'
 import TechPill from '../components/home/TechPill'
-import SEO from '../components/SEO'
+import SEO from '../components/ui/SEO'
 import { technologies } from '../data/projects'
 
 const categoryList = [

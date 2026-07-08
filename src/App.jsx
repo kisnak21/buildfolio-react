@@ -16,6 +16,10 @@ import BookmarksPage from './pages/BookmarksPage'
 import SettingsPage from './pages/SettingsPage'
 import ProjectsPage from './pages/ProjectsPage'
 import NotFoundPage from './pages/NotFoundPage'
+import FAQPage from './pages/FAQPage'
+import ContactPage from './pages/ContactPage'
+import PrivacyPage from './pages/PrivacyPage'
+import TermsPage from './pages/TermsPage'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -80,6 +84,10 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path='/faq' element={<FAQPage />} />
+        <Route path='/contact' element={<ContactPage />} />
+        <Route path='/privacy' element={<PrivacyPage />} />
+        <Route path='/terms' element={<TermsPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
