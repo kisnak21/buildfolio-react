@@ -6,13 +6,15 @@ import {
   updateProject,
   deleteProject,
 } from '../services/projectService.js'
+import authMiddleware from '../middleware/authMiddleware.js'
 
 const router = Router()
 
 // GET /api/projects
 router.get('/', async (req, res) => {
   try {
-    const projects = await getAllProjects()
+    const { search, category, sort } = req.query
+    const projects = await getAllProjects({ search, category, sort })
     res.json({ success: true, data: projects })
   } catch (err) {
     res.status(500).json({ success: false, message: err.message })
@@ -35,7 +37,7 @@ router.get('/:id', async (req, res) => {
 })
 
 // POST /api/projects
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware.verifyToken, async (req, res) => {
   try {
     const {
       title,
@@ -82,7 +84,7 @@ router.post('/', async (req, res) => {
 })
 
 // PATCH /api/projects/:id
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', authMiddleware.verifyToken, async (req, res) => {
   try {
     const project = await updateProject(req.params.id, req.body)
     if (!project) {
@@ -102,7 +104,7 @@ router.patch('/:id', async (req, res) => {
 })
 
 // DELETE /api/projects/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddleware.verifyToken, async (req, res) => {
   try {
     const project = await deleteProject(req.params.id)
     if (!project) {

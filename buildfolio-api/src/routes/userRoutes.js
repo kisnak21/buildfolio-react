@@ -3,10 +3,12 @@ import {
   getAllUsers,
   getUserById,
   createUser,
+  loginUser,
+  verifyEmail,
   updateUser,
   deleteUser,
-  loginUser,
 } from '../services/userService.js'
+import authMiddleware from '../middleware/authMiddleware.js'
 
 const router = Router()
 
@@ -20,22 +22,22 @@ router.get('/', async (req, res) => {
   }
 })
 
-// POST /api/users/login
-router.post('/login', async (req, res) => {
+// GET /api/users/verify-email?token=
+router.get('/verify-email', async (req, res) => {
   try {
-    const { email, password } = req.body
-    if (!email || !password) {
+    const { token } = req.query
+    if (!token) {
       return res
         .status(400)
-        .json({ success: false, message: 'email and password are required' })
+        .json({ success: false, message: 'Token is required' })
     }
-    const user = await loginUser({ email, password })
+    const user = await verifyEmail(token)
     if (!user) {
       return res
-        .status(401)
-        .json({ success: false, message: 'Invalid email or password' })
+        .status(400)
+        .json({ success: false, message: 'Invalid Verification Token' })
     }
-    res.json({ success: true, data: user })
+    res.json({ success: true, message: 'Email Verified Successfully' })
   } catch (err) {
     res.status(500).json({ success: false, message: err.message })
   }
@@ -54,7 +56,7 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-// POST /api/users
+// POST /api/users — Register
 router.post('/', async (req, res) => {
   try {
     const { name, email, password, image, bio } = req.body
@@ -65,7 +67,12 @@ router.post('/', async (req, res) => {
       })
     }
     const user = await createUser({ name, email, password, image, bio })
-    res.status(201).json({ success: true, data: user })
+    res.status(201).json({
+      success: true,
+      message:
+        'Registration successful. Please check your email to verify your account.',
+      data: user,
+    })
   } catch (err) {
     if (err.code === '23505') {
       return res
@@ -76,8 +83,29 @@ router.post('/', async (req, res) => {
   }
 })
 
-// PATCH /api/users/:id
-router.patch('/:id', async (req, res) => {
+// POST /api/users/login
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'email and password are required' })
+    }
+    const result = await loginUser({ email, password })
+    if (!result) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Invalid email or password' })
+    }
+    res.json({ success: true, data: result })
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message })
+  }
+})
+
+// PATCH /api/users/:id — Protected
+router.patch('/:id', authMiddleware.verifyToken, async (req, res) => {
   try {
     const user = await updateUser(req.params.id, req.body)
     if (!user) {
@@ -89,8 +117,8 @@ router.patch('/:id', async (req, res) => {
   }
 })
 
-// DELETE /api/users/:id
-router.delete('/:id', async (req, res) => {
+// DELETE /api/users/:id — Protected
+router.delete('/:id', authMiddleware.verifyToken, async (req, res) => {
   try {
     const user = await deleteUser(req.params.id)
     if (!user) {

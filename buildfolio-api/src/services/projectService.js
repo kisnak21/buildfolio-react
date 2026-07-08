@@ -1,7 +1,37 @@
 import pool from '../config/db.js'
 import crypto from 'crypto'
 
-export const getAllProjects = async () => {
+export const getAllProjects = async ({ search, category, sort } = {}) => {
+  const conditions = []
+  const values = []
+  let paramIndex = 1
+
+  if (search) {
+    conditions.push(
+      `(p.title ILIKE $${paramIndex} OR p.description ILIKE $${paramIndex})`,
+    )
+    values.push(`%${search}%`)
+    paramIndex++
+  }
+
+  if (category) {
+    conditions.push(`c.name = $${paramIndex}`)
+    values.push(category)
+    paramIndex++
+  }
+
+  const whereClause =
+    conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
+
+  const orderClause =
+    sort === 'likes'
+      ? 'ORDER BY p.likes DESC'
+      : sort === 'oldest'
+        ? 'ORDER BY p.created_at ASC'
+        : sort === 'title'
+          ? 'ORDER BY p.title ASC'
+          : 'ORDER BY p.created_at DESC'
+
   const result = await pool.query(
     `SELECT 
       p.*,
@@ -16,8 +46,10 @@ export const getAllProjects = async () => {
      LEFT JOIN categories c ON p.category_id = c.id
      LEFT JOIN project_technologies pt ON p.id = pt.project_id
      LEFT JOIN technologies t ON pt.technology_id = t.id
+     ${whereClause}
      GROUP BY p.id, u.name, c.name
-     ORDER BY p.created_at DESC`,
+     ${orderClause}`,
+    values,
   )
   return result.rows
 }
