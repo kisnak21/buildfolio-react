@@ -10,6 +10,7 @@ import ProjectCard from '../components/home/ProjectCard'
 import CategoryCard from '../components/home/CategoryCard'
 import ProjectCardSkeleton from '../components/home/ProjectCardSkeleton'
 import TechPill from '../components/home/TechPill'
+import SEO from '../components/SEO'
 import { technologies } from '../data/projects'
 
 const categoryList = [
@@ -76,6 +77,10 @@ const HomePage = () => {
 
   return (
     <div className='bg-gray-50 text-gray-900'>
+      <SEO
+        title='Home'
+        description='Discover projects, share ideas, and build your portfolio.'
+      />
       <Header />
 
       <main>

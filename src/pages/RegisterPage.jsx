@@ -9,6 +9,7 @@ import Checkbox from '../components/ui/Checkbox'
 import Button from '../components/ui/Button'
 import GoogleButton from '../components/ui/GoogleButton'
 import Divider from '../components/ui/Divider'
+import SEO from '../components/SEO.jsx'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -84,6 +85,10 @@ const RegisterPage = () => {
 
   return (
     <div className='min-h-screen flex items-center justify-center px-4 py-10 bg-gray-50'>
+      <SEO
+        title='Register'
+        description='Create a new Buildfolio account to showcase your projects and portfolio.'
+      />
       <AuthCard
         title='Create an account'
         subtitle='Start building your portfolio today'

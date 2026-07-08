@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
+import SEO from '../components/SEO'
 
 const NotFoundPage = () => {
   return (
     <div className='bg-gray-50 min-h-screen flex flex-col'>
+      <SEO
+        title='404 - Page Not Found'
+        description="The page you're looking for doesn't exist or has been moved."
+      />
       <Header />
       <main className='flex-1 flex flex-col items-center justify-center px-4 text-center'>
         <p className='text-6xl font-semibold text-gray-200 mb-4'>404</p>

@@ -4,6 +4,7 @@ import { likeProject } from '../store/redux/projectsSlice'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import ProjectCard from '../components/home/ProjectCard'
+import SEO from '../components/SEO'
 
 const ProjectsPage = () => {
   const dispatch = useDispatch()
@@ -50,6 +51,10 @@ const ProjectsPage = () => {
 
   return (
     <div className='bg-gray-50 min-h-screen flex flex-col'>
+      <SEO
+        title='Projects'
+        description='Browse and discover all projects on Buildfolio.'
+      />
       <Header />
 
       <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>

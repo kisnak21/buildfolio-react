@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
+import SEO from '../components/SEO'
 import ProjectCard from '../components/home/ProjectCard'
 import { likeProject } from '../store/redux/projectsSlice'
 import { useDispatch } from 'react-redux'
@@ -24,6 +25,10 @@ const UserProfilePage = () => {
 
   return (
     <div className='bg-gray-50 min-h-screen flex flex-col'>
+      <SEO
+        title={`${author}'s Profile`}
+        description={`View ${author}'s projects and profile on Buildfolio.`}
+      />
       <Header />
 
       <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>

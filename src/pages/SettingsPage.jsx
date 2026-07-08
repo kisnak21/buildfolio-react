@@ -6,6 +6,7 @@ import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import Input from '../components/ui/Input'
 import Button from '../components/ui/Button'
+import SEO from '../components/SEO.jsx'
 
 const SettingsPage = () => {
   const dispatch = useDispatch()
@@ -38,6 +39,10 @@ const SettingsPage = () => {
 
   return (
     <div className='bg-gray-50 min-h-screen flex flex-col'>
+      <SEO
+        title='Settings'
+        description='Update your profile information on Buildfolio.'
+      />
       <Header />
 
       <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>
