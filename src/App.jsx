@@ -15,6 +15,7 @@ import UserProfilePage from './pages/UserProfilePage'
 import BookmarksPage from './pages/BookmarksPage'
 import SettingsPage from './pages/SettingsPage'
 import ProjectsPage from './pages/ProjectsPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -79,6 +80,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )

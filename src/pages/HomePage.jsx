@@ -8,6 +8,7 @@ import Hero from '../components/home/Hero'
 import Section from '../components/home/Section'
 import ProjectCard from '../components/home/ProjectCard'
 import CategoryCard from '../components/home/CategoryCard'
+import ProjectCardSkeleton from '../components/home/ProjectCardSkeleton'
 import TechPill from '../components/home/TechPill'
 import { technologies } from '../data/projects'
 
@@ -146,19 +147,20 @@ const HomePage = () => {
           subtitle='Handpicked by the community'
           viewAllHref='/projects'
         >
-          {loading && (
-            <p className='text-sm text-gray-400'>Loading projects...</p>
-          )}
           {error && <p className='text-sm text-red-500'>{error}</p>}
-          {!loading && !error && (
+          {!error && (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-              {featuredProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onLike={handleLike}
-                />
-              ))}
+              {loading
+                ? Array.from({ length: 3 }).map((_, i) => (
+                    <ProjectCardSkeleton key={i} />
+                  ))
+                : featuredProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      onLike={handleLike}
+                    />
+                  ))}
             </div>
           )}
         </Section>
@@ -210,19 +212,20 @@ const HomePage = () => {
           subtitle='Most liked projects this month'
           viewAllHref='/projects'
         >
-          {loading && (
-            <p className='text-sm text-gray-400'>Loading projects...</p>
-          )}
           {error && <p className='text-sm text-red-500'>{error}</p>}
-          {!loading && !error && (
+          {!error && (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-              {favoriteProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onLike={handleLike}
-                />
-              ))}
+              {loading
+                ? Array.from({ length: 3 }).map((_, i) => (
+                    <ProjectCardSkeleton key={i} />
+                  ))
+                : featuredProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      onLike={handleLike}
+                    />
+                  ))}
             </div>
           )}
         </Section>

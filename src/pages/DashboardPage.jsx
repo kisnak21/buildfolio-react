@@ -15,7 +15,7 @@ const DashboardPage = () => {
   const { currentUser } = useSelector((state) => state.auth)
   const { items: bookmarks } = useSelector((state) => state.bookmarks)
   const totalBookmarks = bookmarks.length
-  const userProjects = projects.filter((p) => p.author === currentUser?.name)
+  const userProjects = projects.filter((p) => p.user_id === currentUser?.id)
   const totalLikes = userProjects.reduce((sum, p) => sum + (p.likes || 0), 0)
 
   const handleDelete = (id) => {
@@ -67,7 +67,10 @@ const DashboardPage = () => {
         )}
         {error && <p className='text-sm text-red-500'>{error}</p>}
         {!loading && !error && (
-          <ProjectTable projects={projects} onDelete={handleDelete} />
+          <ProjectTable
+            projects={projects.filter((p) => p.user_id === currentUser?.id)}
+            onDelete={handleDelete}
+          />
         )}
       </main>
 

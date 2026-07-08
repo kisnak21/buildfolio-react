@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { addProject } from '../store/redux/projectsSlice'
 import Header from '../components/layout/Header'
@@ -7,13 +7,23 @@ import Footer from '../components/layout/Footer'
 import ProjectForm from '../components/dashboard/ProjectForm'
 
 const NewProjectPage = () => {
+  const { currentUser } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [submitError, setSubmitError] = useState(null)
 
   const handleSubmit = async (projectData) => {
     setSubmitError(null)
-    const result = await dispatch(addProject(projectData))
+    if (!currentUser?.id) {
+      setSubmitError('You must be logged in to create a project.')
+      return
+    }
+    const result = await dispatch(
+      addProject({
+        ...projectData,
+        user_id: currentUser.id,
+      }),
+    )
     if (addProject.fulfilled.match(result)) {
       navigate('/dashboard')
     } else {

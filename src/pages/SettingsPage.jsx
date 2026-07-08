@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateProfile } from '../store/redux/authSlice'
+import { updateUserApi } from '../services/api/authApi.js'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import Input from '../components/ui/Input'
@@ -15,16 +16,24 @@ const SettingsPage = () => {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!name.trim()) {
       setError('Name is required.')
       return
     }
     setError('')
-    dispatch(updateProfile({ name: name.trim(), bio: bio.trim() }))
-    setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+    try {
+      await updateUserApi(currentUser.id, {
+        name: name.trim(),
+        bio: bio.trim(),
+      })
+      dispatch(updateProfile({ name: name.trim(), bio: bio.trim() }))
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
+    } catch (err) {
+      setError('Failed to update profile. Please try again.')
+    }
   }
 
   return (

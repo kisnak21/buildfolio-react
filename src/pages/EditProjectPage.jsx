@@ -16,6 +16,9 @@ const EditProjectPage = () => {
     state.projects.items.find((p) => p.id === id),
   )
 
+  const { currentUser } = useSelector((state) => state.auth)
+  const isOwner = project?.user_id === currentUser?.id
+
   const handleSubmit = async (projectData) => {
     setSubmitError(null)
     const result = await dispatch(
@@ -34,6 +37,20 @@ const EditProjectPage = () => {
         <Header />
         <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>
           <p className='text-sm text-gray-500'>Project not found.</p>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
+  if (!isOwner) {
+    return (
+      <div className='bg-gray-50 text-gray-900 min-h-screen flex flex-col'>
+        <Header />
+        <main className='flex-1 max-w-6xl mx-auto px-4 py-12 w-full'>
+          <p className='text-sm text-gray-500'>
+            You don't have permission to edit this project.
+          </p>
         </main>
         <Footer />
       </div>
